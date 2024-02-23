@@ -1,5 +1,5 @@
 var mosca = require('mosca');
-// var mysql = require('mysql');
+var mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 
 // var ascoltatore = {
@@ -23,6 +23,7 @@ server.on('clientConnected', function (client) {
   console.log('client connected', client.id);
 });
 
+// server.authorizeSubscribe
 
 // var con = mysql.createConnection({
 //   host: "localhost",
@@ -36,31 +37,31 @@ server.on('clientConnected', function (client) {
 //   console.log("Connected!");
 // });
 
-server.authorizeSubscribe = function (client, topic, callback) {
-  // console.log(client,client.usernmae, topic);
-  // Implement your authorization logic here
-  // For example, you can check if the client is allowed to subscribe to the given topic
-  // You can then call the callback function with true to allow the subscription, or false to deny it
-  let isAuthorized = /* Your authorization logic */ true;
-  callback(null, isAuthorized);
-};
+// server.authorizeSubscribe = function (client, topic, callback) {
+//   // console.log(client,client.usernmae, topic);
+//   // Implement your authorization logic here
+//   // For example, you can check if the client is allowed to subscribe to the given topic
+//   // You can then call the callback function with true to allow the subscription, or false to deny it
+//   let isAuthorized = /* Your authorization logic */ true;
+//   callback(null, isAuthorized);
+// };
 
 
-server.authenticate = function(client, username, password, callback) {
-  if (username === 'jwt') {
-    try {
-      const decoded = jwt.verify(password.toString(), 'your_secret_key');
-      if (decoded && decoded.clientId) {
-        client.user = decoded.clientId; // Store the client ID in the client object for later use
-        callback(null, true);
-        return;
-      }
-    } catch (err) {
-      console.error('JWT verification failed:', err);
-    }
-  }
-  callback(null, false); // Reject connection if JWT is invalid or missing
-};
+// server.authenticate = function(client, username, password, callback) {
+//   if (username === 'jwt') {
+//     try {
+//       const decoded = jwt.verify(password.toString(), 'your_secret_key');
+//       if (decoded && decoded.clientId) {
+//         client.user = decoded.clientId; // Store the client ID in the client object for later use
+//         callback(null, true);
+//         return;
+//       }
+//     } catch (err) {
+//       console.error('JWT verification failed:', err);
+//     }
+//   }
+//   callback(null, false); // Reject connection if JWT is invalid or missing
+// };
 
 
 server.on('subscribed', (packet, client) => {
