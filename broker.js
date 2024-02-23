@@ -1,5 +1,5 @@
 var mosca = require('mosca');
-var mysql = require('mysql');
+// var mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 
 // var ascoltatore = {
@@ -23,19 +23,18 @@ server.on('clientConnected', function (client) {
   console.log('client connected', client.id);
 });
 
-server.authorizeSubscribe
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "admin",
-  password: "admin",
-  database:"broker"
-});
+// var con = mysql.createConnection({
+//   host: "localhost",
+//   user: "admin",
+//   password: "admin",
+//   database:"broker"
+// });
 
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// con.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
 server.authorizeSubscribe = function (client, topic, callback) {
   // console.log(client,client.usernmae, topic);
@@ -102,10 +101,10 @@ server.on('published', function (packet, client) {
       message_id: packet.messageId
     }
     console.log("data : ", data)
-    con.query(sql, data, function (err, result) {
-      if (err) throw err;
-      console.log("1 ta  xabar saqlandi");
-    });
+    // con.query(sql, data, function (err, result) {
+    //   if (err) throw err;
+    //   console.log("1 ta  xabar saqlandi");
+    // });
   }
 });
 
