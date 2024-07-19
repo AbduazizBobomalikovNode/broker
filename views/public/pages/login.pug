@@ -1,0 +1,60 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Abdusoft
+    // plugins:css
+    link(rel='stylesheet', href='../assets/vendors/mdi/css/materialdesignicons.min.css')
+    link(rel='stylesheet', href='../assets/vendors/css/vendor.bundle.base.css')
+    // endinject
+    // Plugin css for this page
+    // End plugin css for this page
+    // inject:css
+    // endinject
+    // Layout styles
+    link(rel='stylesheet', href='../assets/css/style.css')
+    // End layout styles
+    link(rel='shortcut icon', href='../assets/images/favicon.png')
+  body
+    .container-scroller
+      .container-fluid.page-body-wrapper.full-page-wrapper
+        .row.w-100.m-0
+          .content-wrapper.full-page-wrapper.d-flex.align-items-center.auth.login-bg3
+            .card.col-lg-4.mx-auto
+              .card-body.px-5.py-5
+                h3.card-title.text-left.mb-3 Kirish
+                if error 
+                    p(style="color:red;font-size:12px;").text-center  #{error}
+                form(action='/login', method='POST')
+                  .form-group
+                    label telefon raqam yoki elektron pochta *
+                    input.form-control.p_input(type='text',name='login')
+                  .form-group
+                    label Parol *
+                    input.form-control.p_input(type='text',name='password')
+                  .form-group.d-flex.align-items-center.justify-content-between
+                    .form-check
+                      label.form-check-label
+                        input.form-check-input(type='checkbox')
+                        |  Meni eslab qoling
+                    a.forgot-pass(href='#') Parolni unutdingizmi
+                  .text-center
+                    button.btn.btn-primary.btn-block.enter-btn(type='submit') Kirish
+          // content-wrapper ends
+        // row ends
+      // page-body-wrapper ends
+    // container-scroller
+    // plugins:js
+    script(src='../assets/vendors/js/vendor.bundle.base.js')
+    // endinject
+    // Plugin js for this page
+    // End plugin js for this page
+    // inject:js
+    script(src='../assets/js/off-canvas.js')
+    script(src='../assets/js/hoverable-collapse.js')
+    script(src='../assets/js/misc.js')
+    script(src='../assets/js/settings.js')
+    script(src='../assets/js/todolist.js')
+    // endinject

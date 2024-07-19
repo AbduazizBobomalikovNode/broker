@@ -1,0 +1,185 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Abdusoft
+    // plugins:css
+    link(rel='stylesheet', href='../../assets/vendors/mdi/css/materialdesignicons.min.css')
+    link(rel='stylesheet', href='../../assets/vendors/css/vendor.bundle.base.css')
+    // endinject
+    // Plugin css for this page
+    link(rel='stylesheet', href='../../assets/vendors/jvectormap/jquery-jvectormap.css')
+    link(rel='stylesheet', href='../../assets/vendors/flag-icon-css/css/flag-icon.min.css')
+    link(rel='stylesheet', href='../../assets/vendors/owl-carousel-2/owl.carousel.min.css')
+    link(rel='stylesheet', href='../../assets/vendors/owl-carousel-2/owl.theme.default.min.css')
+    // End plugin css for this page
+    // inject:css
+    // endinject
+    // Layout styles
+    link(rel='stylesheet', href='../../assets/css/style.css')
+    // End layout styles
+    link(rel='shortcut icon', href='../../assets/images/favicon.png')
+    script.
+      window.onload = function () {
+      let title = document.title + " ✅";
+      let index = 0;
+      setInterval(function () {
+      index = (index + 1) % (title.length + 1);
+      if (index == 0) index = 1;
+      if (title.substring(index, title.length)[0] == ' ') index++;
+      document.title = title.substring(index, title.length) + title.substring(0, index);
+      console.log(title.substring(index, title.length) + title.substring(0, index) + " " + index);
+      }, 400);
+      };
+    //
+      <style>
+      *{
+      border: 1px solid red !important;
+      }
+      </style>
+  body
+    .container-scroller
+      // partial:partials/_sidebar.html
+      nav#sidebar.sidebar.sidebar-offcanvas
+        .sidebar-brand-wrapper.d-none.d-lg-flex.align-items-center.justify-content-center.fixed-top
+          a.sidebar-brand.brand-logo(href='/')
+            img(src='../../assets/images/logo.svg', alt='logo')
+          a.sidebar-brand.brand-logo-mini(href='/')
+            img(src='../../assets/images/logo-mini.svg', alt='logo')
+        ul.nav
+          li.nav-item.profile
+            .profile-desc
+              .profile-pic
+                .count-indicator
+                  img.img-xs.rounded-circle(src='../../assets/images/faces/images.jpg', alt='')
+                  span.count.bg-success
+                .profile-name
+                  h5.mb-0.font-weight-normal #{user.name}
+                  span #{user.role}
+          li.nav-item.nav-category
+            span.nav-link Navigation
+          li.nav-item.menu-items
+            a.nav-link(href='/')
+              span.menu-icon
+                i.mdi.mdi-speedometer
+              span.menu-title Asosiy panel
+          if task || role || user
+            li.nav-item.menu-items
+              a.nav-link(data-toggle='collapse', href='#ui-basic', aria-expanded='false', aria-controls='ui-basic')
+                span.menu-icon
+                  i.mdi.mdi-laptop
+                span.menu-title Admin bo&apos;limi
+                i.menu-arrow
+              #ui-basic.collapse
+                ul.nav.flex-column.sub-menu
+                  if task 
+                    li.nav-item
+                      a.nav-link(href='/task') Vazifalar
+                  if role
+                    li.nav-item
+                      a.nav-link(href='/role') Rollar
+                  if user
+                    li.nav-item
+                      a.nav-link(href='/user') Foydalanuvchilar
+            li.nav-item.menu-items
+                    a.nav-link(href='/device')
+                      span.menu-icon
+                        i.mdi.mdi-memory
+                      span.menu-title qurilmalar
+            li.nav-item.menu-items
+                    a.nav-link(href='/topic')
+                      span.menu-icon
+                        i.mdi.mdi-chart-bubble
+                      span.menu-title mavzular          
+            li.nav-item.menu-items
+                    a.nav-link(href='/test')
+                      span.menu-icon
+                        i.mdi.mdi-codepen
+                      span.menu-title Test xabarlar  
+      // partial
+      .container-fluid.page-body-wrapper
+        // partial:partials/_navbar.html
+        nav.navbar.p-0.fixed-top.d-flex.flex-row
+          .navbar-brand-wrapper.d-flex.d-lg-none.align-items-center.justify-content-center
+            a.navbar-brand.brand-logo-mini(href='/')
+              img(src='../../assets/images/logo-mini.svg', alt='logo')
+          .navbar-menu-wrapper.flex-grow.d-flex.align-items-stretch
+            button.navbar-toggler.navbar-toggler.align-self-center(type='button', data-toggle='minimize')
+              span.mdi.mdi-menu
+            ul.navbar-nav.navbar-nav-right
+              li.nav-item.dropdown
+                a#profileDropdown.nav-link(href='#', data-toggle='dropdown')
+                  .navbar-profile
+                    img.img-xs.rounded-circle(src='../../assets/images/faces/images.jpg', alt='')
+                    p.mb-0.d-none.d-sm-block.navbar-profile-name #{user.name}
+                    i.mdi.mdi-menu-down.d-none.d-sm-block
+                .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='profileDropdown')
+                  h6.p-3.mb-0 Profil
+                  .dropdown-divider
+                  a.dropdown-item.preview-item
+                    .preview-thumbnail
+                      .preview-icon.bg-dark.rounded-circle
+                        i.mdi.mdi-settings.text-success
+                    .preview-item-content
+                      p.preview-subject.mb-1 Sozlamalar
+                  .dropdown-divider
+                  a(href="/signout").dropdown-item.preview-item
+                    .preview-thumbnail
+                      .preview-icon.bg-dark.rounded-circle
+                        i.mdi.mdi-logout.text-danger
+                    .preview-item-content
+                      p.preview-subject.mb-1 Hisobdan chiqish
+                  .dropdown-divider
+            button.navbar-toggler.navbar-toggler-right.d-lg-none.align-self-center(type='button', data-toggle='offcanvas')
+              span.mdi.mdi-format-line-spacing
+        // partial
+        .main-panel
+          .content-wrapper
+            .col-12.grid-margin.stretch-card
+              .card
+                .card-body
+                  h4.card-title Vazifani tahrirlash
+                  p.card-description Tizim vazifalarini yangilash
+                  form(action='/task/update/'+id, method='POST').forms-sample
+                    .form-group
+                      label(for='exampleInputName1') Vazifa nomi
+                      input#exampleInputName1.form-control(type='text',name='name',placeholder='Vazifa nomi',value=name)
+                    .form-group
+                      label(for='exampleInputEmail3') Vazifa Yo&apos;li
+                      input#exampleInputEmail3.form-control(type='text',name='path',placeholder="Vazifa yo'li",value=path)
+                    .form-group
+                      label(for='exampleTextarea1') Vazifa haqida tavsif 
+                      textarea#exampleTextarea1.form-control(rows='4',name='description')
+                       | #{description}
+                    button#sent.btn.btn-primary.mr-2(type='submit') Yangilash
+                    a(href="/task") 
+                      button.btn.btn-dark(type='button') Bekor qilish
+          // content-wrapper ends
+          // partial:partials/_footer.html
+          footer.footer
+          // partial
+        // main-panel ends
+      // page-body-wrapper ends
+    // container-scroller
+    // plugins:js
+    script(src='../../assets/vendors/js/vendor.bundle.base.js')
+    // endinject
+    // Plugin js for this page
+    script(src='../../assets/vendors/chart.js/Chart.min.js')
+    script(src='../../assets/vendors/progressbar.js/progressbar.min.js')
+    script(src='../../assets/vendors/jvectormap/jquery-jvectormap.min.js')
+    script(src='../../assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js')
+    script(src='../../assets/vendors/owl-carousel-2/owl.carousel.min.js')
+    // End plugin js for this page
+    // inject:js
+    script(src='../../assets/js/off-canvas.js')
+    script(src='../../assets/js/hoverable-collapse.js')
+    script(src='../../assets/js/misc.js')
+    script(src='../../assets/js/settings.js')
+    script(src='../../assets/js/todolist.js')
+    // endinject
+    // Custom js for this page
+    script(src='../../assets/js/dashboard.js')
+    // End custom js for this page

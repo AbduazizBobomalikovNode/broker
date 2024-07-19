@@ -1,0 +1,137 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Abdusoft
+    style.
+      body{
+      background-color:black;
+      }
+      .center{
+      width: fit-content;
+      height: fit-content;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      display: flex;
+      }
+      .left,.right,.left_right{
+      margin-left: 5vw;
+      width: fit-content;
+      height: fit-content;
+      }
+      .right{
+      padding-top: 8vh;
+      }
+      .loader {
+      transform: translate(20%,20%) rotateZ(45deg);
+      perspective: 1000px;
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      color: #0b5520;
+      }
+      .loader:before,
+      .loader:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: inherit;
+      height: inherit;
+      border-radius: 50%;
+      transform: rotateX(70deg);
+      animation: 1s spin linear infinite;
+      }
+      .loader:after {
+      color: #FF3D00;
+      transform: rotateY(70deg);
+      animation-delay: .4s;
+      }
+      @keyframes rotate {
+      0% {
+      transform: translate(-50%, -50%) rotateZ(0deg);
+      }
+      100% {
+      transform: translate(-50%, -50%) rotateZ(360deg);
+      }
+      }
+      @keyframes rotateccw {
+      0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+      }
+      100% {
+      transform: translate(-50%, -50%) rotate(-360deg);
+      }
+      }
+      @keyframes spin {
+      0%,
+      100% {
+      box-shadow: .2em 0px 0 0px currentcolor;
+      }
+      12% {
+      box-shadow: .2em .2em 0 0 currentcolor;
+      }
+      25% {
+      box-shadow: 0 .2em 0 0px currentcolor;
+      }
+      37% {
+      box-shadow: -.2em .2em 0 0 currentcolor;
+      }
+      50% {
+      box-shadow: -.2em 0 0 0 currentcolor;
+      }
+      62% {
+      box-shadow: -.2em -.2em 0 0 currentcolor;
+      }
+      75% {
+      box-shadow: 0px -.2em 0 0 currentcolor;
+      }
+      87% {
+      box-shadow: .2em -.2em 0 0 currentcolor;
+      }
+      }
+      .loader2 {
+      font-size: 48px;
+      display: inline-block;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      color: #FFF;
+      letter-spacing: 2px;
+      position: relative;
+      box-sizing: border-box;
+      }
+      .loader2::after {
+      content: 'Yuklanmoqda ...';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #263238;
+      text-shadow: 0 0 2px #FFF, 0 0 1px #FFF, 0 0 1px #FFF;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+      animation: animloader2 6s linear infinite;
+      }
+      @keyframes animloader2 {
+      0% {
+      height: 100%;
+      }
+      100% {
+      height: 0%;
+      }
+      }
+  body
+    .p(hidden='')#value #{link} 
+    .center
+      .left
+        span.loader
+      .left_right
+      .right
+        span.loader2 Yuklanmoqda ...
+    script.
+      setTimeout(()=>{window.location.href = '/certifcate';window.open(document.getElementById("value").innerText);},10*1000);

@@ -1,23 +1,24 @@
 {
-  "name": "mqqt-example",
-  "version": "1.0.0",
+  "name": "broker-server",
+  "version": "2.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "start running.bat && node broker.js",
-    "broker": "node broker.js",
-    "publisher": "node publisher.js",
-    "subscriber": "node subscriber.js",
-    "broker-dev": "nodemon broker.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Bobomalikov Abduaziz",
+  "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.1.0",
     "mosca": "^2.8.3",
-    "mqtt": "^5.3.5",
-    "mysql": "^2.18.1"
-  },
-  "description": ""
+    "pug": "^3.0.2",
+    "nedb": "^1.8.0"
+  }
 }

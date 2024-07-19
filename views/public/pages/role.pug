@@ -1,0 +1,284 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Abdusoft
+    // plugins:css
+    link(rel='stylesheet' href=path+'../assets/vendors/mdi/css/materialdesignicons.min.css')
+    link(rel='stylesheet' href=path+'../assets/vendors/css/vendor.bundle.base.css')
+    // endinject
+    // Plugin css for this page
+    link(rel='stylesheet' href=path+'../assets/vendors/jvectormap/jquery-jvectormap.css')
+    link(rel='stylesheet' href=path+'../assets/vendors/flag-icon-css/css/flag-icon.min.css')
+    link(rel='stylesheet' href=path+'../assets/vendors/owl-carousel-2/owl.carousel.min.css')
+    link(rel='stylesheet' href=path+'../assets/vendors/owl-carousel-2/owl.theme.default.min.css')
+    // End plugin css for this page
+    // inject:css
+    // endinject
+    // Layout styles
+    link(rel='stylesheet' href=path+'../assets/css/style.css')
+    // End layout styles
+    link(rel='shortcut icon' href=path+'../assets/images/favicon.png')
+    script.
+      window.onload = function () {
+      let title = document.title + " ✅";
+      let index = 0;
+      setInterval(function () {
+      index = (index + 1) % (title.length + 1);
+      if (index == 0) index = 1;
+      if (title.substring(index, title.length)[0] == ' ') index++;
+      document.title = title.substring(index, title.length) + title.substring(0, index);
+      }, 400);
+      };
+    //
+      <style>
+      *{
+      border: 1px solid red !important;
+      }
+      </style>
+  body
+    .container-scroller
+      // partial:partials/_sidebar.html
+      nav#sidebar.sidebar.sidebar-offcanvas
+        .sidebar-brand-wrapper.d-none.d-lg-flex.align-items-center.justify-content-center.fixed-top
+          a.sidebar-brand.brand-logo(href='/')
+            img(src=path+'../assets/images/logo.svg' alt='logo')
+          a.sidebar-brand.brand-logo-mini(href='/')
+            img(src=path+'../assets/images/logo-mini.svg' alt='logo')
+        ul.nav
+          li.nav-item.profile
+            .profile-desc
+              .profile-pic
+                .count-indicator
+                  img.img-xs.rounded-circle(src=path+'../assets/images/faces/images.jpg' alt='')
+                  span.count.bg-success
+                .profile-name
+                  h5.mb-0.font-weight-normal #{user.name}
+                  span #{user.role}
+          li.nav-item.nav-category
+            span.nav-link Navigation
+          li.nav-item.menu-items
+            a.nav-link(href='/')
+              span.menu-icon
+                i.mdi.mdi-speedometer
+              span.menu-title Asosiy panel
+          if user.bolimlar.task || user.bolimlar.role || user.bolimlar.user
+            li.nav-item.menu-items
+              a.nav-link(data-toggle='collapse' href='#ui-basic' aria-expanded='false' aria-controls='ui-basic')
+                span.menu-icon
+                  i.mdi.mdi-laptop
+                span.menu-title Admin bo&apos;limi
+                i.menu-arrow
+              #ui-basic.collapse
+                ul.nav.flex-column.sub-menu
+                  if user.bolimlar.task
+                    li.nav-item
+                      a.nav-link(href='/task') Vazifalar
+                  if user.bolimlar.role
+                    li.nav-item
+                      a.nav-link(href='/role') Rollar
+                  if user.bolimlar.user
+                    li.nav-item
+                      a.nav-link(href='/user') Foydalanuvchilar
+          if user.bolimlar.device
+            li.nav-item.menu-items
+              a.nav-link(href='/device')
+                span.menu-icon
+                  i.mdi.mdi-memory
+                span.menu-title qurilmalar
+          if user.bolimlar.topic
+            li.nav-item.menu-items
+              a.nav-link(href='/topic')
+                span.menu-icon
+                  i.mdi.mdi-chart-bubble
+                span.menu-title mavzular
+          if user.bolimlar.test
+            li.nav-item.menu-items
+              a.nav-link(href='/test')
+                span.menu-icon
+                  i.mdi.mdi-codepen
+                span.menu-title Test xabarlar 
+      // partial
+      .container-fluid.page-body-wrapper
+        // partial:partials/_navbar.html
+        nav.navbar.p-0.fixed-top.d-flex.flex-row
+          .navbar-brand-wrapper.d-flex.d-lg-none.align-items-center.justify-content-center
+            a.navbar-brand.brand-logo-mini(href='/')
+              img(src=path+'../assets/images/logo-mini.svg' alt='logo')
+          .navbar-menu-wrapper.flex-grow.d-flex.align-items-stretch
+            button.navbar-toggler.navbar-toggler.align-self-center(type='button' data-toggle='minimize')
+              span.mdi.mdi-menu
+            ul.navbar-nav.navbar-nav-right
+              li.nav-item.dropdown
+                a#profileDropdown.nav-link(href='#' data-toggle='dropdown')
+                  .navbar-profile
+                    img.img-xs.rounded-circle(src=path+'../assets/images/faces/images.jpg' alt='')
+                    p.mb-0.d-none.d-sm-block.navbar-profile-name #{user.name}
+                    i.mdi.mdi-menu-down.d-none.d-sm-block
+                .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='profileDropdown')
+                  h6.p-3.mb-0 Profil
+                  .dropdown-divider
+                  a.dropdown-item.preview-item
+                    .preview-thumbnail
+                      .preview-icon.bg-dark.rounded-circle
+                        i.mdi.mdi-settings.text-success
+                    .preview-item-content
+                      p.preview-subject.mb-1 Sozlamalar
+                  .dropdown-divider
+                  a(href="/signout").dropdown-item.preview-item
+                    .preview-thumbnail
+                      .preview-icon.bg-dark.rounded-circle
+                        i.mdi.mdi-logout.text-danger
+                    .preview-item-content
+                      p.preview-subject.mb-1 Hisobdan chiqish
+                  .dropdown-divider
+            button.navbar-toggler.navbar-toggler-right.d-lg-none.align-self-center(type='button' data-toggle='offcanvas')
+              span.mdi.mdi-format-line-spacing
+        // partial
+        .main-panel
+          .content-wrapper
+            .row
+              .col-xl-3.col-sm-6.grid-margin.stretch-card
+                .card
+                  .card-body
+                    .row
+                      .col-12
+                        .d-flex.align-items-center.align-self-start
+                          h3(style='width: 100%; text-align: center; font-size: xx-large;')
+                            | #{count} 
+                            mark(style='background:none;color: greenyellow;') ta
+                    h6.text-muted.font-weight-normal.text-center
+                      b #{count} 
+                      |  ta
+                      br
+                      |  elementdan filtrlangan
+              .col-xl-8.col-sm-12.grid-margin.stretch-card
+                .card
+                  .card-body
+                    .row
+                      .col-6
+                        .template-demo
+                          .form-group
+                            // <label for="exampleFormControlSelect1">Rolni tanlang</label>
+                            select#exampleFormControlSelect1.form-control.form-control-lg
+                      .col-6
+                        .form-group
+                          // <label for="exampleFormControlSelect1">Large select</label>
+                          select#exampleFormControlSelect1.form-control.form-control-lg
+            .row
+              .col-12.grid-margin
+                .card
+                  .card-body
+                    .template-demo
+                      h4.card-title
+                        | Rollar
+                        if  user.bolimlar.role.add 
+                          a(href='/role/add')
+                            button.btn.btn-success.btn-icon-text(type='button' style='margin-left: 5%;')
+                              i.mdi.mdi-plus-circle.btn-icon-append
+                                span  Qo&apos;shish
+                        if user.bolimlar.role.deletes==true && user.bolimlar.role.deletesAll==true 
+                          a#delete(href='#',title='/role/all/delete/')
+                            button#btn-delete.btn.btn-danger.btn-icon-text.disabled(type='button')
+                              i.mdi.mdi-close
+                              span  O'chirish
+                    .table-responsive
+                      table.table
+                        thead
+                          tr
+                            th
+                              .form-check.form-check-muted.m-0
+                                label.form-check-label
+                                  input(onclick='chekboxAll()')#all.form-check-input(type='checkbox')
+                            th &numero;
+                            th Rol nomi
+                            th Rol Vazifalari
+                            th  Ammallar 
+                        tbody
+                          - for (var x = 0; x < roles.length; x++)
+                            tr
+                              td
+                                .form-check.form-check-muted.m-0
+                                  label.form-check-label
+                                    input(id=roles[x].id,onclick='chekbox()').form-check-input(type='checkbox')
+                              td #{page*15-15+x+1} 
+                              td #{roles[x].name}
+                              td #{roles[x].tasks}
+                              td
+                                .btn-group(role='group' aria-label='Basic example')
+                                  if  user.bolimlar.role.view 
+                                    a(href='/role/view/'+roles[x].id)
+                                      button.btn.btn-outline-primary(type='button')
+                                        i.mdi.mdi-eye
+                                  if user.bolimlar.role.update
+                                    a(href='/role/update/'+roles[x].id)
+                                      button.btn.btn-outline-light(type='button' title='tahrirlash')
+                                        i.mdi.mdi-lead-pencil
+                                  if user.bolimlar.role.deletes
+                                    a(href='/role/delete/'+roles[x].id)
+                                      button.btn.btn-outline-danger(type='button')
+                                        i.mdi.mdi-close
+                        tfoot 
+                          tr 
+                            td(colspan=4)  
+                              .template-demo
+                                .btn-group(role='group' aria-label='Basic example')
+                                  if page-1 != 0 
+                                    a(href='/role/page/'+(page-1))
+                                      button.btn.btn-outline-secondary(type='button') 
+                                        i.mdi.mdi-arrow-left-bold
+                                  else 
+                                    button.btn.btn-outline-secondary.disabled(type='button') 
+                                      i.mdi.mdi-arrow-left-bold
+                                  - for (var x = 0; x < count/15; x++)
+                                    if page-1==x
+                                      button.btn.btn-primary(type='button') #{x+1}
+                                    else
+                                      a(href='/role/page/'+(x+1))
+                                        button.btn.btn-outline-secondary(type='button') #{x+1}
+                                  if page+1<=parseInt(count/15)+(count%15>0?1:0) 
+                                    a(href='/role/page/'+(page+1))
+                                      button.btn.btn-outline-secondary(type='button')   
+                                        i.mdi.mdi-arrow-right-bold
+                                  else 
+                                    button.btn.btn-outline-secondary.disabled(type='button')   
+                                      i.mdi.mdi-arrow-right-bold
+                            td #{count} ta element mavjut
+          // content-wrapper ends
+          // partial:partials/_footer.html
+          footer.footer
+            //
+              <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com
+              2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+              href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+              templates</a> from Bootstrapdash.com</span>
+              </div>
+          // partial
+          // main-panel ends
+          // page-body-wrapper ends
+          // container-scroller
+          // plugins:js
+          script(src=path+'../assets/vendors/js/vendor.bundle.base.js')
+          // endinject
+          // Plugin js for this page
+          script(src=path+'../assets/vendors/chart.js/Chart.min.js')
+          script(src=path+'../assets/vendors/progressbar.js/progressbar.min.js')
+          script(src=path+'../assets/vendors/jvectormap/jquery-jvectormap.min.js')
+          script(src=path+'../assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js')
+          script(src=path+'../assets/vendors/owl-carousel-2/owl.carousel.min.js')
+          // End plugin js for this page
+          // inject:js
+          script(src=path+'../assets/js/off-canvas.js')
+          script(src=path+'../assets/js/hoverable-collapse.js')
+          script(src=path+'../assets/js/misc.js')
+          script(src=path+'../assets/js/settings.js')
+          script(src=path+'../assets/js/todolist.js')
+          script(src=path+'../asserts/js/cheks.js')
+          // endinject
+          // Custom js for this page
+          script(src=path+'../assets/js/dashboard.js')
+          // End custom js for this page

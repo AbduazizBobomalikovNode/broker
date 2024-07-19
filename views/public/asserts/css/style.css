@@ -1,0 +1,7 @@
+.container{
+    background-color: rgb(231, 231, 231);
+}
+.col-md-6{
+    padding: 20vh 5vw;
+    background-color: rgb(255, 0, 0);
+}
