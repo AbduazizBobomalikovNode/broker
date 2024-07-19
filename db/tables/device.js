@@ -23,8 +23,8 @@ function Device(table) {
             .sort({ name: 1 }).toArray()
         return result;
     }
-    this.getDeviceAllFilter = async (skip,limit) => {
-        const result = await table.find({}, { projection: { _id: 0 ,lastModified:0} })
+    this.getDeviceAllFilter = async (skip,limit,find_user) => {
+        const result = await table.find({iduser:find_user}, { projection: { _id: 0 ,lastModified:0} })
             .sort({ name: 1}).limit(limit).skip(skip).toArray();
         return result;
     };

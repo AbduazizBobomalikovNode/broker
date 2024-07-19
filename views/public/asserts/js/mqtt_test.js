@@ -31,7 +31,12 @@ const messagesRoot = document.getElementById('messages');
 
 const token = kre  || "adsafdsgsdgf45sdfsefs"; 
 if (token) {
-    const localhostMqtt = `mqtt://`+document.location.host.split(':')[0] + ":7000";
+    let localhostMqtt = "";
+    if (!document.location.host.startsWith("localhost")) {
+        localhostMqtt = `wss://`+document.location.host.split(':')[0] + "/mqtt";
+    }else{
+        localhostMqtt = `mqtt://`+document.location.host.split(':')[0] + ":7000";
+    }
     client = mqtt.connect(wsUrl || localhostMqtt, {
         clientId: clientId,
         username: username,

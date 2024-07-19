@@ -12,14 +12,14 @@ setTimeout(async () => { db = await db }, 100);
 
 
 router.get("/", auth, async (req, res) => {
-    let topic = await (await db).topic.getTopicAll();
-    let topics = await (await db).topic.getTopicAllFilter(0, 15);
+    let topic = await (await db).topic.getTopicForObj({ iduser: req.user.id });
+    let topics = await (await db).topic.getTopicAllFilter(0, 15, req.user.id);
 
     res.render('public/pages/topic', {
         path: '',
         topics: topics,
         count: topics.length,
-        filter_count:topic.length,
+        filter_count: topic.length,
         page: 1,
         user: req.user
     });
@@ -30,38 +30,38 @@ router.get("/page/:page", auth, async (req, res) => {
     if (!page) {
         page = 1;
     }
-    let topic = await (await db).topic.getTopicAll();
-    let topics = await (await db).topic.getTopicAllFilter(page * 15 - 15, 15);
-   
+    let topic = await (await db).topic.getTopicForObj({ iduser: req.user.id });
+    let topics = await (await db).topic.getTopicAllFilter(page * 15 - 15, 15, req.user.id);
+
 
     res.render('public/pages/topic', {
         path: '../',
         topics: topics,
         count: topics.length,
-        filter_count:topic.length,
+        filter_count: topic.length,
         page: page,
         user: req.user
     });
 })
 
-router.get("/get/topic/:id", auth, async (req, res) => {
-    let id = parseInt(req.params.id);
-    if (!id) {
-        return res.status(400).json({ error: 'id xato berildi, id butun son qiymat bo\'lishi shart' });
-    }
-    let topic = await (await db).topic.getTopic(id);
-    if (!topic) {
-        return res.status(404).json({ error: 'ushbu idga mos mavzu to\'pilmadi!' });
-    }
-    res.json(
-        topic
-    );
-})
+// router.get("/get/topic/:id", auth, async (req, res) => {
+//     let id = parseInt(req.params.id);
+//     if (!id) {
+//         return res.status(400).json({ error: 'id xato berildi, id butun son qiymat bo\'lishi shart' });
+//     }
+//     let topic = await (await db).topic.getTopic(id);
+//     if (!topic) {
+//         return res.status(404).json({ error: 'ushbu idga mos mavzu to\'pilmadi!' });
+//     }
+//     res.json(
+//         topic
+//     );
+// })
 
 router.get("/view/:id", auth, async (req, res) => {
     let id = Number(req.params.id);
-    let topic = await (await db).topic.getTopic(id);
-    if (!topic) {
+    let topic = await (await db).topic.getTopicForObj({ id: id, iduser: req.user.id });
+    if (topic.length == 0) {
         return res.render('public/pages/erors/error-404', {
             status: 404,
             error: 'ushbu idga mos Mavzu to\'pilmadi!',
@@ -71,18 +71,18 @@ router.get("/view/:id", auth, async (req, res) => {
 
     res.render('public/pages/view', {
         header: "Mavzular",
-        data: topic,
+        data: topic[0],
         back: '../',
         user: req.user
     });
 })
 
-router.get('/get/all', auth, async (req, res) => {
-    let topics = await (await db).topic.getTopicAll();
-    res.json(
-        topics
-    );
-})
+// router.get('/get/all', auth, async (req, res) => {
+//     let topics = await (await db).topic.getTopicAll();
+//     res.json(
+//         topics
+//     );
+// })
 
 router.get('/add', auth, async (req, res) => {
     res.render('public/pages/topic/add', {
@@ -101,9 +101,9 @@ router.post('/add', auth, async (req, res) => {
             path: '/role'
         });
     }
-    
+
     let body = req.body;
-    let topic_int = await (await db).topic.getTopicForObj({ name: body.name,iduser:req.user.id });
+    let topic_int = await (await db).topic.getTopicForObj({ name: body.name, iduser: req.user.id });
     if (topic_int.length > 0) {
         return res.render('public/pages/erors/error-404', {
             status: 400,
@@ -112,11 +112,11 @@ router.post('/add', auth, async (req, res) => {
         });
     }
     let topic = {
-        id: await generateId(db,8,"topic"),
+        id: await generateId(db, 8, "topic"),
         name: body.name,
-        topic: `/index/${req.user.id}/`+body.name,
-        description:body.description,
-        iduser:req.user.id
+        topic: `/index/${req.user.id}/` + body.name,
+        description: body.description,
+        iduser: req.user.id
     };
     let result = await (await db).topic.addTopic(topic);
     if (result.hasOwnProperty('error')) {
@@ -126,7 +126,7 @@ router.post('/add', auth, async (req, res) => {
             path: '/topic'
         });
     }
-    
+
     res.send(`<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -151,18 +151,18 @@ router.get('/update/:id', auth, async (req, res) => {
             path: '/topic'
         });
     }
-    let topic = await (await db).topic.getTopic(id);
-    if (!topic) {
+    let topic = await (await db).topic.getTopicForObj({ id: id, iduser: req.user.id });
+    if (topic.length == 0) {
         return res.render('public/pages/erors/error-404', {
             status: 404,
             error: 'ushbu idga mos Mavzu to\'pilmadi!',
             path: '/topic'
         });
     }
-    
+
     res.render('public/pages/topic/edit', {
         path: '/',
-        ...topic,
+        ...topic[0],
         user: req.user
     });
 });
@@ -177,7 +177,7 @@ router.post('/update/:id', auth, async (req, res) => {
         });
     }
 
-    let body = { name: req.body.name,description:req.body.description};
+    let body = { name: req.body.name, description: req.body.description };
     let id = parseInt(req.params.id);
 
     if (!id) {
@@ -187,28 +187,28 @@ router.post('/update/:id', auth, async (req, res) => {
             path: '/topic'
         });
     }
-    
-    let topic = await (await db).topic.getTopic(id);
 
-    if (body.hasOwnProperty("name") && topic.name != body.name) {
-        let topic_int = await (await db).topic.getTopicForObj({ name: body.name,iduser:req.user.id });
-        if (topic_int.length > 0) {
-            return res.render('public/pages/erors/error-404', {
-                status: 400,
-                error: 'ushbu  qiymatlar allaqachon kritilgan',
-                path: '/topic'
-            });
+    let topic = await (await db).topic.getTopicForObj({ id: id, iduser: req.user.id });
+    if (topic.length > 0) {
+        if (body.hasOwnProperty("name") && topic.name != body.name) {
+            let topic_int = await (await db).topic.getTopicForObj({ name: body.name, iduser: req.user.id });
+            if (topic_int.length > 0) {
+                return res.render('public/pages/erors/error-404', {
+                    status: 400,
+                    error: 'ushbu  qiymatlar allaqachon kritilgan',
+                    path: '/topic'
+                });
+            }
         }
-    }
-    if (!topic) {
+    } else {
         return res.render('public/pages/erors/error-404', {
             status: 404,
             error: 'ushbu idga mos mavzu to\'pilmadi!',
             path: '/topic'
         });
     }
-    
-    
+
+
     let result = await (await db).topic.update(id, body);
     if (result.hasOwnProperty('error')) {
         return res.render('public/pages/erors/error-404', {
@@ -241,8 +241,8 @@ router.get('/delete/:id', auth, async (req, res) => {
             path: '/topic'
         });
     }
-    let topic = await (await db).topic.getTopic(id);
-    if (!topic) {
+    let topic = await (await db).topic.getTopicForObj({id:id,iduser: req.user.id});
+    if (topic.length == 0) {
         return res.render('public/pages/erors/error-404', {
             status: 404,
             error: 'ushbu idga mos mavzu to\'pilmadi!',
@@ -276,7 +276,7 @@ router.get('/all/delete/:id', auth, async (req, res) => {
     }
     for (let index = 1; index < ids.length; index++) {
         const element = ids[index];
-        let topic = await (await db).topic.getTopic(element);
+        let topic = await (await db).topic.getTopicForObj({id:element,iduser: req.user.id});;
         if (!topic) {
             return res.render('public/pages/erors/error-404', {
                 status: 404,
@@ -301,22 +301,20 @@ router.get('/all/delete/:id', auth, async (req, res) => {
     </html>`)
 });
 
+// router.delete('/delete/:id', auth, async (req, res) => {
+//     let id = parseInt(req.params.id);
+//     if (!id) {
+//         return res.status(400).json({ error: 'id xato berildi, id butun son qiymat bo\'lishi shart' });
+//     }
 
-
-router.delete('/delete/:id', auth, async (req, res) => {
-    let id = parseInt(req.params.id);
-    if (!id) {
-        return res.status(400).json({ error: 'id xato berildi, id butun son qiymat bo\'lishi shart' });
-    }
-
-    let topic = await (await db).topic.getTopic(id);
-    if (!topic) {
-        return res.status(404).json({ error: 'ushbu idga mos mavzu to\'pilmadi!' });
-    }
-    let result = await (await db).topic.delete(id);
-    res.json(
-        topic
-    );
-})
+//     let topic = await (await db).topic.getTopic(id);
+//     if (!topic) {
+//         return res.status(404).json({ error: 'ushbu idga mos mavzu to\'pilmadi!' });
+//     }
+//     let result = await (await db).topic.delete(id);
+//     res.json(
+//         topic
+//     );
+// })
 
 module.exports = router;
