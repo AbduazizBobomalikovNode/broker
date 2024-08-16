@@ -116,7 +116,8 @@ router.post('/add', auth, async (req, res) => {
         name: body.name,
         topic: `/index/${req.user.id}/` + body.name,
         description: body.description,
-        iduser: req.user.id
+        iduser: req.user.id,
+        this_saved:false
     };
     let result = await (await db).topic.addTopic(topic);
     if (result.hasOwnProperty('error')) {
@@ -168,6 +169,12 @@ router.get('/update/:id', auth, async (req, res) => {
 });
 
 router.post('/update/:id', auth, async (req, res) => {
+    // console.log(req.body)
+        
+    if (req.body.hasOwnProperty("this_saved")) {
+        req.body.this_saved = req.body.this_saved == 'on'?true:false;
+    }
+
     const { error } = validate(req.body);
     if (error) {
         return res.render('public/pages/erors/error-404', {
@@ -177,7 +184,7 @@ router.post('/update/:id', auth, async (req, res) => {
         });
     }
 
-    let body = { name: req.body.name, description: req.body.description };
+    let body = { name: req.body.name, description: req.body.description,this_saved:req.body.this_saved };
     let id = parseInt(req.params.id);
 
     if (!id) {
@@ -191,7 +198,7 @@ router.post('/update/:id', auth, async (req, res) => {
     let topic = await (await db).topic.getTopicForObj({ id: id, iduser: req.user.id });
     if (topic.length > 0) {
         if (body.hasOwnProperty("name") && topic.name != body.name) {
-            let topic_int = await (await db).topic.getTopicForObj({ name: body.name, iduser: req.user.id });
+            let topic_int = await (await db).topic.getTopicForObj({ name: body.name,this_saved:req.body.this_saved, iduser: req.user.id });
             if (topic_int.length > 0) {
                 return res.render('public/pages/erors/error-404', {
                     status: 400,
