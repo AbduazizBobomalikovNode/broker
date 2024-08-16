@@ -7,7 +7,8 @@ function Validate(xabar, method) {
     });
     const sxema2 = Joi.object({
         name: Joi.string().min(1).max(50),
-        description: Joi.string().min(0).max(1500)
+        description: Joi.string().min(0).max(1500),
+        this_saved: Joi.boolean()
     });
 
     if (method == 'add')

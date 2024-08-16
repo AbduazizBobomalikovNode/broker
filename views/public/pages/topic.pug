@@ -209,6 +209,10 @@ html(lang='en')
                                     td  #{topics[x].id}
                                     td  #{topics[x].name}
                                     td  #{topics[x].description}
+                                    if (topics[x].this_saved)
+                                      td malumotlar saqlanadi 
+                                    else
+                                      td malumotlar bir martalik 
                                     td
                                         .btn-group(role='group', aria-label='Basic example')
                                         if user.bolimlar.topic.view 

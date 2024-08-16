@@ -39,11 +39,11 @@ var server = new mosca.Server(settings);
 server.on('clientConnected', function (client) {
   console.log('client connected', client.id);
 });
-server.on('clientDisconnected', function(client) {
+server.on('clientDisconnected', function (client) {
   console.log('Mijoz uzildi:', client.id);
 
   // Mijoz uzilganida, obunalarni o'chirish
-  subscriptionsDb.remove({ clientId: client.id }, { multi: true }, function(err, numRemoved) {
+  subscriptionsDb.remove({ clientId: client.id }, { multi: true }, function (err, numRemoved) {
     if (err) {
       console.error('Obunalarni o\'chirishda xato:', err);
     } else {
@@ -105,7 +105,7 @@ server.authorizeSubscribe = async function (client, topic, callback) {
 
 function send_save_data_for_user(topic, client) {
   console.log(`send_save_data_for_user  is  worked : ${topic}`)
-  messagesDb.find({ topic: topic }, function (err, messages) {
+  messagesDb.find({ topic: topic }, async function (err, messages) {
     if (!err && messages) {
       console.log("messagesDb :", messages)
       messages.forEach(function (message) {
@@ -122,7 +122,9 @@ function send_save_data_for_user(topic, client) {
 
       // Mavzuga obuna bo'linganligi haqida bazaga yozish
       if (topic) {
+        this_saved
         if (topic.startsWith("/index/") && topic.split('/').length >= 4) {
+
           subscriptionsDb.insert({ topic: topic, clientId: client.id }, function (err, newSub) {
             if (err) {
               console.error('Obunani saqlashda xato:', err);
@@ -230,23 +232,29 @@ server.on('published', async function (packet, client) {
   if (packet.topic) {
     if (packet.topic.startsWith("/index/") && packet.topic.split('/').length >= 4) {
       // Obuna bo'lmagan mavzularga xabarni saqlash
-      subscriptionsDb.findOne({ topic: packet.topic }, function (err, subscription) {
+      subscriptionsDb.findOne({ topic: packet.topic }, async function (err, subscription) {
         if (!subscription) {
-          var message = {
-            topic: packet.topic,
-            payload: packet.payload.toString(),
-            qos: packet.qos,
-            retain: packet.retain,
-            timestamp: new Date()
-          };
+          let elm = await (await db).topic.getTopicForObj({ topic: packet.topic });
+          if (elm.length > 0) {
+            if (elm.this_saved) {
+              var message = {
+                topic: packet.topic,
+                payload: packet.payload.toString(),
+                qos: packet.qos,
+                retain: packet.retain,
+                timestamp: new Date()
+              };
 
-          messagesDb.insert(message, function (err, newDoc) {
-            if (err) {
-              console.error('Xabar saqlashda xato:', err);
-            } else {
-              console.log('Yangi xabar saqlandi:', newDoc);
+              messagesDb.insert(message, function (err, newDoc) {
+                if (err) {
+                  console.error('Xabar saqlashda xato:', err);
+                } else {
+                  console.log('Yangi xabar saqlandi:', newDoc);
+                }
+              });
             }
-          });
+          }
+
         }
       });
     }

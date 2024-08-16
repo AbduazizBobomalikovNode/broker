@@ -143,11 +143,16 @@ html(lang='en')
                     .form-group
                       label(for='exampleInputName1') Mavzu nomi
                       input#exampleInputName1.form-control(type='text',value=name,name = 'name', placeholder='Rol nomi')
+
                     .form-group.row
                       .col-sm-12
                         label.col-sm-12.col-form-label Mavzu haqida qisqacha tarif bering.
                         textarea.form-control(id='', name='description', cols='30', rows='3', placeholder='Aynan qaysi qurilmalar xabr almashi uchun')
                             |  #{description}
+                    if (user.role.includes("admin"))
+                      .form-group
+                        label(for='exampleInputName1') Mavzu ma'lumotlari saqlansinmi
+                        input#exampleInputName1.form-control(type='checkbox',name='this_saved',checked=this_saved)
                     button.btn.btn-primary.mr-2(type='submit') yangilash
                     a(href="/topic") 
                       button.btn.btn-dark(type='button') Bekor qilish
