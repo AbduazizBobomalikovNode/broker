@@ -20200,10 +20200,15 @@ div.tagsinput {
 .auth.login-bg1 {
     background: url("../images/auth/login_bg1.jpg");
     background-size: cover; }
-.auth.login-bg3 {
+.auth.login-bg3 { 
       background: url("../images/auth/login_bg3.jpg");
       background-size: cover; }
-
+.auth.login-bg4 { 
+        background: url("../images/auth/login_bg4.png");
+        background-size: cover; }
+.auth.login-bg5 { 
+          background: url("../images/auth/login_bg5.png");
+          background-size: cover; }
 .auth .login-half-bg {
   background: url("../images/auth/login-bg.jpg");
   background-size: cover; }

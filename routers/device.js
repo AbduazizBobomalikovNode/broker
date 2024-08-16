@@ -6,6 +6,10 @@ var generateId = require('../resurs/functions/getid');
 const validate = require("../resurs/validate/device");
 var auth = require("../middlewire/auth");
 
+const jwt = require('jsonwebtoken');
+const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
+
+
 
 setTimeout(async () => { db = await db }, 100);
 
@@ -24,6 +28,10 @@ router.get("/", auth, async (req, res) => {
         devices[index] = element;
         // console.log(element.topics)
     }
+    const token = jwt.sign({ 
+        id:req.user.id
+       }, jwt_my_key);
+
     res.render('public/pages/device', {
         path: '',
         device: devices,
@@ -31,6 +39,7 @@ router.get("/", auth, async (req, res) => {
         topics: topics,
         filter_count: device.length,
         page: 1,
+        token:token,
         user: req.user
     });
 })
@@ -55,7 +64,9 @@ router.get("/page/:page", auth, async (req, res) => {
         }
         devices[index] = element;
     }
-
+    const token = jwt.sign({ 
+        id:req.user.id
+       }, jwt_my_key);
     res.render('public/pages/device', {
         path: '../',
         device: devices,
@@ -63,6 +74,7 @@ router.get("/page/:page", auth, async (req, res) => {
         filter_count: device.length,
         topics: topics,
         page: page,
+        token:token,
         user: req.user
     });
 })

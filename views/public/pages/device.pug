@@ -4,7 +4,7 @@ html(lang='en')
     // Required meta tags
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    title Corona Admin
+    title Abdusoft
     // plugins:css
     link(rel='stylesheet', href=path+'../assets/vendors/mdi/css/materialdesignicons.min.css')
     link(rel='stylesheet', href=path+'../assets/vendors/css/vendor.bundle.base.css')
@@ -206,6 +206,7 @@ html(lang='en')
                             th  Qurilma ulanish kaliti
                             th  Xabar yuboradigan mavzu 
                             th  Xabar qabul qiladigan mavzu 
+                            th  Ulanish tokeni 
                             th  Ammallar 
                         tbody
                           - for (var x = 0; x < device.length; x++)
@@ -217,6 +218,7 @@ html(lang='en')
                               td  #{device[x].id} 
                               td  #{device[x].name} 
                               td  #{device[x].key} 
+                               
                               td
                                   select(multiple='multiple',id=device[x].id).js-select2.updatePub
                                       - for (var i = 0; i < topics.length; i++)
@@ -231,6 +233,10 @@ html(lang='en')
                                           option(value=topics[i].id,selected=true) #{topics[i].name} 
                                         else 
                                           option(value=topics[i].id,selected=false) #{topics[i].name} 
+                              
+                              td 
+                                input#buttontoken.form-control(type='text', value=token, readonly='', style='width:10vw;')
+                                
                               td
                                 .btn-group(role='group', aria-label='Basic example')
                                   if user.bolimlar.device.view 
@@ -327,3 +333,17 @@ html(lang='en')
     script(src=path+'../asserts/selection_/js/bootstrap.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js')
     script(src=path+'../asserts/selection_/js/main.js')
+    script.
+      // Barcha tugmalarni olish
+      const buttons = document.querySelectorAll('#buttontoken');
+      // Har bir tugmaga event listener qo'shish
+      buttons.forEach(button => {
+      button.addEventListener('click', function() {
+      const nameValue = this.getAttribute('value'); // Tugma name qiymatini olish
+      navigator.clipboard.writeText(nameValue).then(function() {
+      alert(`"${nameValue}" buferga saqlandi!`);
+      }).catch(function(error) {
+      console.error('Buferga saqlashda xatolik yuz berdi:', error);
+      });
+      });
+      });

@@ -1,6 +1,6 @@
 {
-  "name": "broker-server",
-  "version": "2.0.0",
+  "name": "diplom-ishi",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,12 +13,17 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
+    "docxtemplater": "^3.40.2",
+    "docxtemplater-image-module-free": "^1.1.1",
     "express": "^4.18.2",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.1.0",
     "mosca": "^2.8.3",
+    "nedb": "^1.8.0",
+    "pizzip": "^3.1.4",
     "pug": "^3.0.2",
-    "nedb": "^1.8.0"
+    "qrcode": "^1.5.3",
+    "socket.io": "^4.7.5"
   }
 }

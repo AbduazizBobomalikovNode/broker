@@ -3,7 +3,7 @@ const cookieParser = require("cookie-parser");
 var auth = require("./middlewire/auth");
 const jwt = require('jsonwebtoken');
 // var document = require("./middlewire/document");
-const port = 3000; // yoki istalgan boshqa port
+const port = 5000; // yoki istalgan boshqa port
 const app = express();
 
 const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
