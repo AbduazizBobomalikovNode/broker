@@ -37,7 +37,6 @@ app.use('/api/DHT', DHTRouter)
 app.use('/test',auth,(req,res,next)=>{
   const token = jwt.sign({ 
     id:req.user.id,
-    email:req.user.email,
     password:req.user.password
    }, jwt_my_key);
   res.render('public/pages/mqtt_test_client',{

@@ -6,6 +6,7 @@ function Validate(xabar, method) {
     });
     const sxema2 = Joi.object({
         name: Joi.string().min(3).max(50),
+        
     });
 
     if (method == 'add')

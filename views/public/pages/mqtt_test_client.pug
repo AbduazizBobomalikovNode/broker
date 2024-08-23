@@ -205,7 +205,7 @@ html(lang='en')
     script.
       const wsUrl = null; //= `!{mqtt_url}`|| ``; 
       const kre = `!{c}`|| ``;
-      const clientId =  'user-!{user.id}';
+      const clientId =  'user-!{user.id}'+"-"+(new Date()).valueOf();
       const username = `!{user.name}`;
       const userID = `!{user.id}`;
     script(src='../asserts/js/mqtt_test.js')

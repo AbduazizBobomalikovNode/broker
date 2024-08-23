@@ -122,7 +122,6 @@ function send_save_data_for_user(topic, client) {
 
       // Mavzuga obuna bo'linganligi haqida bazaga yozish
       if (topic) {
-        this_saved
         if (topic.startsWith("/index/") && topic.split('/').length >= 4) {
 
           subscriptionsDb.insert({ topic: topic, clientId: client.id }, function (err, newSub) {
@@ -270,11 +269,11 @@ server.authenticate = async function (client, username, password, callback) {
     console.log(client.id, username, user);
     if (client.id.startsWith("user-")) {
       let password = user.password;
-      let email = user.email;
-      let dbuser = await (await db).user.getUserForObj({ email: email });
+      let user_id = Number(user.id);
+      let dbuser = await (await db).user.getUser(user_id);
       console.log(dbuser);
-      if (dbuser.length > 0) {
-        let pas_flag = password == dbuser[0].password || await bcrypt.compare(password, dbuser[0].password);
+      if (dbuser) {
+        let pas_flag = password == dbuser.password || await bcrypt.compare(password, dbuser.password);
 
         devicesPublish[client.id] = ["all"];
         devicesSubscribe[client.id] = ["all"];
