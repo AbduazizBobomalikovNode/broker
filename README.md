@@ -4,6 +4,8 @@ IoT qurilmalar uchun o'z MQTT brokeringiz va uni boshqaradigan web panel.
 
 Broker qurilmalarni qabul qiladi, panel esa ularni ro'yxatga oladi, topiclarga biriktiradi va kim nimaga yozishi mumkinligini belgilaydi.
 
+**Sahifa:** [abduazizbobomalikovnode.github.io/broker/](https://abduazizbobomalikovnode.github.io/broker/)
+
 > Bu diplom ishi doirasida yozilgan. Juftlik loyihasi — chaqiruvlarni vazifaga aylantiruvchi [smart-call-servise](https://github.com/AbduazizBobomalikovNode/smart-call-servise).
 
 ---
