@@ -1,6 +1,6 @@
 var mosca = require('mosca');
 const jwt = require('jsonwebtoken');
-const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
+const jwt_my_key = process.env.JWT_MY_KEY;
 var db = require('./db/mongodb');
 const bcrypt = require('bcrypt');
 var Datastore = require('nedb');

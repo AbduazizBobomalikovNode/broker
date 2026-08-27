@@ -1,5 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = process.env.URI_MONGO ? process.env.URI_MONGO : '***OLIB-TASHLANDI***/?retryWrites=true&w=majority&appName=Cluster0';
+const uri = process.env.URI_MONGO;
+if (!uri) throw new Error('URI_MONGO environment o\'zgaruvchisi berilmagan');;
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,

@@ -7,7 +7,7 @@ const validate = require("../resurs/validate/device");
 var auth = require("../middlewire/auth");
 
 const jwt = require('jsonwebtoken');
-const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
+const jwt_my_key = process.env.JWT_MY_KEY;
 
 
 

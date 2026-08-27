@@ -1,3 +1,5 @@
+require('dotenv').config();
+if (!process.env.JWT_MY_KEY) throw new Error("JWT_MY_KEY environment o'zgaruvchisi berilmagan");
 const express = require('express');
 const cookieParser = require("cookie-parser");
 var auth = require("./middlewire/auth");
@@ -6,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const port = 5000; // yoki istalgan boshqa port
 const app = express();
 
-const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
+const jwt_my_key = process.env.JWT_MY_KEY;
 var auth = require("./middlewire/auth");
 
 const taskRouter = require("./routers/task");

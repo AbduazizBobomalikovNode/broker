@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const jwt_my_key = process.env.JWT_MY_KEY || "***OLIB-TASHLANDI***";
+const jwt_my_key = process.env.JWT_MY_KEY;
 var db = require('../db/mongodb');
 
 setInterval(async () => { db = await db }, 100);
