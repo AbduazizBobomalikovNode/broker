@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MQTT Broker — Qurilmalaringiz uchun o'z brokeringiz</title>
+<meta name="description" content="Mosca ustida qurilgan MQTT broker va uning boshqaruv paneli. Qurilmalarni ro'yxatga oladi, topiclarga biriktiradi, kim nimaga yozishini nazorat qiladi."/>
+<meta property="og:title" content="MQTT Broker"/>
+<meta property="og:description" content="Mosca ustida qurilgan MQTT broker va uning boshqaruv paneli. Qurilmalarni ro'yxatga oladi, topiclarga biriktiradi, kim nimaga yozishini nazorat qiladi."/>
+<style>
+:root{
+  --bg:#07090f;--ink:#eef1f6;--ink2:#98a2b3;--ink3:#6b7480;
+  --accent:#2dd4bf;--accent2:#22d3ee;--warn:#f59e0b;
+  --line:rgba(238,241,246,.10);--card:rgba(255,255,255,.028);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:-30%;z-index:-2;
+  background:radial-gradient(48rem 32rem at 18% 8%,#2dd4bf29,transparent 60%),
+             radial-gradient(42rem 30rem at 82% 22%,#22d3ee24,transparent 62%),
+             radial-gradient(38rem 28rem at 50% 92%,#2dd4bf14,transparent 65%);
+  animation:drift 26s ease-in-out infinite alternate}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 78%);opacity:.55}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-3%,2%,0) scale(1.08)}}
+.wrap{max-width:860px;margin:0 auto;padding:0 22px}
+section{padding:72px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--accent);border:1px solid #2dd4bf52;border-radius:999px;padding:6px 14px;background:#2dd4bf12}
+h1{font-size:clamp(34px,6.4vw,60px);line-height:1.06;letter-spacing:-.03em;font-weight:800;margin:22px 0 0}
+h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.02em;font-weight:700;margin-bottom:14px}
+h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.lede{font-size:clamp(17px,2.3vw,21px);color:#c6ccd6;margin-top:20px;max-width:64ch}
+.muted{color:var(--ink2)}
+.small{font-size:14px;color:var(--ink3)}
+code{font:600 13.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:5px}
+header{padding:14vh 0 20px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.hero-meta span{border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--ink2);background:var(--card)}
+.problem{border-left:3px solid var(--warn);padding-left:22px;margin-top:8px}
+.problem p{color:#c6ccd6;max-width:62ch}
+.problem p+p{margin-top:14px}
+.quote{font-size:clamp(19px,2.8vw,25px);line-height:1.42;color:var(--ink);font-weight:600;letter-spacing:-.01em}
+.steps{counter-reset:s;margin-top:26px}
+.step{counter-increment:s;position:relative;padding:20px 0 20px 62px;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}
+.step::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:19px;
+  font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);
+  border:1px solid #2dd4bf57;border-radius:8px;padding:8px 9px;background:#2dd4bf12}
+.step p{color:var(--ink2);font-size:15px;margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px;margin-top:26px}
+.card{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--card);transition:border-color .2s,transform .2s,background .2s}
+.card:hover{border-color:#2dd4bf66;transform:translateY(-2px);background:#2dd4bf0d}
+.card .ic{font-size:20px;margin-bottom:12px;display:block}
+.card p{font-size:14.5px;color:var(--ink2)}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.stack span{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;color:var(--ink2);background:var(--card)}
+.cta{text-align:center;border-top:1px solid var(--line);margin-top:20px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px}
+a.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:650;font-size:15.5px;padding:14px 26px;border-radius:11px;border:1px solid var(--line);color:var(--ink);transition:border-color .2s,transform .2s}
+a.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+a.btn.primary{background:linear-gradient(100deg,var(--accent),var(--accent2));color:#07090f;border:0;font-weight:750}
+footer{padding:34px 0 60px;text-align:center;color:var(--ink3);font-size:14px}
+footer a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+footer a:hover{color:var(--ink);border-color:var(--accent)}
+.rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards}
+.d1{animation-delay:.06s}.d2{animation-delay:.13s}.d3{animation-delay:.2s}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="rise"><span class="eyebrow">Node.js · MQTT · Mosca</span></div>
+  <h1 class="rise d1">Qurilmalaringiz uchun<br/><span class="grad">o'z brokeringiz</span></h1>
+  <p class="lede rise d2">Mosca ustida qurilgan MQTT broker va uning boshqaruv paneli. Qurilmalarni ro'yxatga oladi, topiclarga biriktiradi, kim nimaga yozishini nazorat qiladi.</p>
+  <div class="hero-meta rise d3"><span>Mosca</span><span>MongoDB + NeDB</span><span>Web panel</span></div>
+</header>
+
+<section class="wrap">
+  <h2>Muammo</h2>
+  <div class="problem">
+    <p class="quote">"Bulutdagi broker — bu boshqa birovning serveri."</p>
+    <p>IoT qurilmalarni ulash uchun broker kerak. Tayyor bulut xizmatlari bor, lekin ular pullik, chekloviy va ma'lumotingiz chetda turadi. Ichki tarmoqdagi zavod yoki bino uchun bu ko'pincha umuman mos kelmaydi.</p>
+    <p>O'z brokeringizni ko'tarish esa yarim ish: qurilmalarni ro'yxatga olish, topiclarni taqsimlash va kim nimaga yozishini boshqarish uchun panel ham kerak.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Qanday ishlaydi</h2>
+  <p class="muted">Broker va panel bitta jarayonda ishlaydi.</p>
+  <div class="steps">
+    <div class="step"><h3>Broker ko'tariladi</h3><p>Mosca MQTT serveri ishga tushadi — qurilmalar to'g'ridan-to'g'ri shunga ulanadi.</p></div>
+    <div class="step"><h3>Qurilma ro'yxatga olinadi</h3><p>Har qurilma bazaga yoziladi va o'z topic'iga biriktiriladi.</p></div>
+    <div class="step"><h3>Ruxsatlar beriladi</h3><p>Kim qaysi topic'ni o'qiydi va kim yozadi — rollar orqali.</p></div>
+    <div class="step"><h3>Panelda kuzatiladi</h3><p>Ulanishlar va xabarlar oqimi web interfeysda ko'rinadi.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Nima beradi</h2>
+  <div class="grid">
+    <div class="card"><span class="ic">🛰</span><h3>O'z brokeringiz</h3><p>Ma'lumot ichki tarmoqdan chiqmaydi, oylik to'lov yo'q.</p></div>
+    <div class="card"><span class="ic">🔗</span><h3>Qurilma ↔ topic</h3><p>Biriktirish jadval orqali boshqariladi.</p></div>
+    <div class="card"><span class="ic">👥</span><h3>Rol va ruxsat</h3><p>O'qish va yozish huquqlari alohida.</p></div>
+    <div class="card"><span class="ic">💾</span><h3>Ikki baza</h3><p>MongoDB asosiy ma'lumot uchun, NeDB yengil lokal saqlash uchun.</p></div>
+    <div class="card"><span class="ic">🔐</span><h3>Auth</h3><p>JWT va bcrypt — panelga kirish himoyalangan.</p></div>
+    <div class="card"><span class="ic">📱</span><h3>QR bilan qo'shish</h3><p>Yangi qurilmani qo'lda kiritish shart emas.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Nimadan qurilgan</h2>
+  <div class="stack"><span>Node.js</span><span>Mosca (MQTT)</span><span>Express</span><span>MongoDB</span><span>NeDB</span><span>Socket.io</span><span>Pug</span><span>JWT</span></div>
+</section>
+
+<section class="wrap cta">
+  <h2>Ko'rib chiqing</h2>
+  <p class="muted">Kod ochiq, o'rnatish yo'riqnomasi README'da.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/AbduazizBobomalikovNode/broker">GitHub'da ochish →</a>
+    <a class="btn" href="https://4d-portfolio.vercel.app">Boshqa loyihalarim</a>
+  </div>
+</section>
+
+<footer>
+  <b>Abduaziz Bobomalikov</b> · <a href="https://4d-portfolio.vercel.app">4D Portfolio</a> · <a href="https://t.me/Bobomalikov_Abduaziz">Telegram</a>
+</footer>
+
+</body>
+</html>
